@@ -54,7 +54,6 @@ create_pull_request() {
     TARGET="${2}";  # pull request TO this target
     BODY="${3}";    # this is the content of the message
     TITLE="${4}";   # pull request title
-    DRAFT="${5}";   # if PRs are draft
 
     # check if the branch already has a pull request open
     DATA="{\"base\":\"${TARGET}\", \"head\":\"${SOURCE}\", \"body\":\"${BODY}\"}";
@@ -93,15 +92,6 @@ main () {
     fi
     echo "using BASE_BRANCH ${BASE_BRANCH}";
 
-    # PULL_REQUEST_DRAFT
-    if [[ -z "${PULL_REQUEST_DRAFT}" ]]; then
-        echo "no PULL_REQUEST_DRAFT set";
-        PULL_REQUEST_DRAFT="false";
-    else
-        PULL_REQUEST_DRAFT="true";
-    fi
-    echo "using PULL_REQUEST_DRAFT $PULL_REQUEST_DRAFT";
-
     # get target branch
     HEAD_BRANCH=$(jq --raw-output .ref "${GITHUB_EVENT_PATH}");
     HEAD_BRANCH=$(echo "${HEAD_BRANCH/refs\/heads\//}");
@@ -129,7 +119,7 @@ main () {
             fi
             echo "using PULL_REQUEST_TITLE ${PULL_REQUEST_TITLE}";
 
-            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}" "${PULL_REQUEST_DRAFT}";
+            create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}";
         fi
     fi
 }
