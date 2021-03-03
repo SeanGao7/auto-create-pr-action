@@ -104,19 +104,11 @@ main () {
         if [[ $HEAD_BRANCH == ${BRANCH_PREFIX}* ]]; then
             check_credentials;
 
-            # PULL_REQUEST_BODY
-            if [[ -z "${PULL_REQUEST_BODY}" ]]; then
-                echo "no PULL_REQUEST_BODY set";
-                PULL_REQUEST_BODY="";
-            else
-                echo "using PULL_REQUEST_BODY ${PULL_REQUEST_BODY}";
-            fi
+            PULL_REQUEST_BODY="Automated PR: From ${HEAD_BRANCH} to ${BASE_BRANCH}, please review asap.";
 
-            # PULL_REQUEST_TITLE
-            if [[ -z "${PULL_REQUEST_TITLE}" ]]; then
-                echo "no PULL_REQUEST_TITLE set";
-                PULL_REQUEST_TITLE="${HEAD_BRANCH}";
-            fi
+            echo "using PULL_REQUEST_BODY ${PULL_REQUEST_BODY}";
+
+            PULL_REQUEST_TITLE="[Auto-PR] ${HEAD_BRANCH} -> ${BASE_BRANCH}";
             echo "using PULL_REQUEST_TITLE ${PULL_REQUEST_TITLE}";
 
             create_pull_request "${HEAD_BRANCH}" "${BASE_BRANCH}" "${PULL_REQUEST_BODY}" "${PULL_REQUEST_TITLE}";
